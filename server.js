@@ -5,6 +5,8 @@ const cookieParser = require("cookie-parser");
 const utils = require("./apps/Utils/jwtUtils");
 const passport = require("passport");
 const flash = require("connect-flash");
+require('./apps/login/facebook_auth.js');
+
 require("dotenv").config();
 
 const { ConnectSessionKnexStore } = require("connect-session-knex");
@@ -17,6 +19,7 @@ const store = new ConnectSessionKnexStore({
   knex,
   tablename: "sessions",
 });
+
 
 const app = express();
 app.use(
@@ -80,6 +83,8 @@ app.use("/login", loginRouter);
 app.use("/logout", logoutRouter);
 app.use("/cart", cartRouter);
 app.use("/checkout", checkoutRouter); 
+
+// app.get('/login/federated/facebook', passport.authenticate('facebook'));
 
 
 const PORT = process.env.SERVER_PORT || 3000;

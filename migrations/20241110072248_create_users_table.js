@@ -13,6 +13,7 @@ exports.up = async function (knex) {
     salt VARCHAR(255) NOT NULL,
     role VARCHAR(32) NOT NULL,
     avatar_img_url VARCHAR,
+    verified BOOLEAN DEFAULT FALSE,
     is_active BOOLEAN DEFAULT TRUE NOT NULL
 );`
   );

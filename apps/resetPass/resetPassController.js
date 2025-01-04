@@ -1,4 +1,4 @@
-const registrationService = require('./registrationService');
+const resetPassService = require('./resetPassService');
 const userVerificationService=require('../userVerification/userVerificationService')
 const { StatusCodes, getReasonPhrase } = require('http-status-codes');
 var crypto = require('crypto');
@@ -41,7 +41,7 @@ async function handleRegisterRequest(req, res) {
             return res.render("register", { message, title });
         }
         
-        const userCheck = await registrationService.findUserByEmail(email);
+        const userCheck = await resetPassService.findUserByEmail(email);
         if (userCheck) {
             message = "Email này đã được đăng ký. Vui lòng sử dụng email khác.";
             if (req.xhr) {
@@ -61,9 +61,9 @@ async function handleRegisterRequest(req, res) {
         try {
             const genPass = await genPassword(password);
             try {
-                const newUser = await registrationService.createUser(name, email, genPass.hashedPassword, genPass.salt);
+                const newUser = await resetPassService.createUser(name, email, genPass.hashedPassword, genPass.salt);
                 sendVerificationEmail(newUser, res);
-                message="Registration successful! Please check your email to verify your account."
+                message="resetPass successful! Please check your email to verify your account."
                 if (req.xhr) {
                     return res.json({ message, title });
                 }
@@ -92,7 +92,7 @@ async function handleRegisterRequest(req, res) {
     }
 }
 
-async function renderRegistrationPage(req, res) {
+async function renderresetPassPage(req, res) {
     try {
         message = "";
         if (req.xhr) {
@@ -122,7 +122,7 @@ async function renderVerify(req, res) {
         if (userVerification.expires_at < Date.now()) {
             try {
                 await userVerificationService.deleteUserVerificationByUserId(userId);
-                await registrationService.deleteUserById(userId);
+                await resetPassService.deleteUserById(userId);
                 const message = "Link has expired. Please sign up again.";
                 return res.render("register", { message, title: "Register - Supershop - GA05" });
             } catch (error) {
@@ -140,7 +140,7 @@ async function renderVerify(req, res) {
 
         // Mark user as verified
         try {
-            await registrationService.updateUserVerifyById(userId);
+            await resetPassService.updateUserVerifyById(userId);
             await userVerificationService.deleteUserVerificationByUserId(userId);
             const message = "Account successfully verified. You can now log in.";
             return res.render("login", { message, title:login_title });
@@ -195,6 +195,6 @@ const sendVerificationEmail =async ({id,email},res)=>{
 
 module.exports = {
     handleRegisterRequest,
-    renderRegistrationPage,
+    renderresetPassPage,
     renderVerify
 };

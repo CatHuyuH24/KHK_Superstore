@@ -29,7 +29,7 @@
         </div>
 
         <div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-lg">
-            <form action="/register" method="POST">
+            <form action="/register" method="POST" id="register-form">
                 <div class="mb-4">
                     <label for="name" class="block text-gray-700">Name</label>
                     <input type="text" id="name" name="name"
@@ -55,28 +55,29 @@
                         required />
                 </div>
 
-                <% if (typeof message !=='undefined' && message !=='' ) { %>
-                    <div class="alert alert-info text-center text-yellow-500">
-                        <%= message %>
+              
+               
+                <div id="message" class="alert alert-danger text-center text-red-500">
+                    <%= message%>
+                </div>
+             
+
+                    <div class="mb-4 flex items-center">
+                        <input type="checkbox" id="agree" name="agree" class="mr-2" required />
+                        <label for="agree" class="text-sm text-gray-600">I agree to the
+                            <a href="#" class="text-blue-500">Terms and Conditions</a></label>
                     </div>
-                    <% } %>
 
-                        <div class="mb-4 flex items-center">
-                            <input type="checkbox" id="agree" name="agree" class="mr-2" required />
-                            <label for="agree" class="text-sm text-gray-600">I agree to the
-                                <a href="#" class="text-blue-500">Terms and Conditions</a></label>
-                        </div>
-
-                        <div class="form-group">
-                            <button type="submit"
-                                class="w-full bg-indigo-500 text-white py-2 rounded-md hover:bg-indigo-600">
-                                Register
-                            </button>
-                        </div>
+                    <div class="form-group">
+                        <button type="submit"
+                            class="w-full bg-indigo-500 text-white py-2 rounded-md hover:bg-indigo-600">
+                            Register
+                        </button>
+                    </div>
             </form>
         </div>
     </main>
-
+    <script src="/js/errorWhenRegisterAJAX.js"></script>
     <!-- #region Footer-->
     <%- include('layouts/footer') %>
     <!-- #endregion Footer -->

@@ -4,38 +4,38 @@ const validPassword=require('../Utils/passwordUtils').validPassword;
 const utils=require('../Utils/jwtUtils');
 const title = "Login - Supershop - GA05";
 
-async function handleLoginRequest(req, res, next) {
-    try{
-        const {email, password} = req.body;
-        const user= await loginService.findUserByEmail(email);
-        if(!user){
-            message =
-                "Incorrect Email or Password!.";
-            return res.render("login", { message, title });
-        }
-        const isValid=await validPassword(password,user.password,user.salt);
+// async function handleLoginRequest(req, res, next) {
+//     try{
+//         const {email, password} = req.body;
+//         const user= await loginService.findUserByEmail(email);
+//         if(!user){
+//             message =
+//                 "Incorrect Email or Password!.";
+//             return res.render("login", { message, title });
+//         }
+//         const isValid=await validPassword(password,user.password,user.salt);
 
-        if(isValid){
-            const tokenObject = utils.issueJWT(user);
-            res.cookie('token', tokenObject.token, {
-                httpOnly: false, 
-                secure: true,   
-                maxAge: 3600000 
-            });
+//         if(isValid){
+//             const tokenObject = utils.issueJWT(user);
+//             res.cookie('token', tokenObject.token, {
+//                 httpOnly: false, 
+//                 secure: true,   
+//                 maxAge: 3600000 
+//             });
             
-            return res.redirect('/mobilephones');
-        }
-        else {
-            message =
-                "Incorrect Email or Password!.";
-            return res.render("login", { message, title});
-        }
-    }
-    catch(err){
-        return next(err);
-    }
+//             return res.redirect('/mobilephones');
+//         }
+//         else {
+//             message =
+//                 "Incorrect Email or Password!.";
+//             return res.render("login", { message, title});
+//         }
+//     }
+//     catch(err){
+//         return next(err);
+//     }
         
-}
+// }
 
 async function renderLoginPage(req, res) {
     try {
@@ -54,6 +54,5 @@ async function renderLoginPage(req, res) {
 }
 
 module.exports = {
-    handleLoginRequest,
     renderLoginPage,
 };

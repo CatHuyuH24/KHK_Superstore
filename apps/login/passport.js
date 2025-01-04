@@ -6,10 +6,17 @@ const title = "Login - Supershop - GA05";
 
 const verifyCallback=async (email, password, done)=>{
     try{
+
         message =
         "Incorrect Email or Password!.";
         const user= await loginService.findUserByEmail(email);
         if(!user){
+            
+            return done(null,false, { message, title });
+        }
+        if(user.verified==false){
+            message =
+            "Your account has not been verified yet!. Check your email!.";
             return done(null,false, { message, title });
         }
         const isValid=await validPassword(password,user.hashed_password,user.salt);
