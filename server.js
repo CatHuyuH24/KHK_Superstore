@@ -49,6 +49,7 @@ const loginRouter = require("./apps/login/loginRouter");
 const logoutRouter = require("./apps/logout/logoutRouter");
 const cartRouter = require("./apps/cart/cartRouter");
 const checkoutRouter = require("./apps/checkout/checkoutRouter");
+const resetPassRouter=require("./apps/ResetPassword/resetPassRouter.js");
 
 
 // Set the view engine to EJS
@@ -83,6 +84,7 @@ app.use("/login", loginRouter);
 app.use("/logout", logoutRouter);
 app.use("/cart", cartRouter);
 app.use("/checkout", checkoutRouter); 
+app.use("/resetPass",resetPassRouter);
 
 // app.get('/login/federated/facebook', passport.authenticate('facebook'));
 

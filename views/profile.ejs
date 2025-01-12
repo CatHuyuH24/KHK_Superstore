@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>
+        <%= title %>
+    </title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="referrer" content="always" />
+    <meta name="description" content="TailwindCSS Ecommerce Template" />
+    <link href="//fonts.googleapis.com/css?family=Righteous" rel="stylesheet" />
+    <link href="//fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300i,700" rel="stylesheet" />
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/all.min.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link id="favicon" rel="icon" type="image/png" href="/images/store_icon.ico" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/tailwind.css" />
+</head>
+
+<body>
+    <!-- #region Header -->
+    <%- include('layouts/mainLayout', { content: locals.body }) %>
+        <!-- #region Search -->
+        <%- include('layouts/search')%>
+            <!-- #endregion Search -->
+            <!--region get user_id to put into cart-->
+            <input type="hidden" id="user-id" value="<%= user_id %>" />
+            <!-- #endregion Header -->
+
+            <div class="max-w-xl mx-auto mt-20 bg-white shadow-md rounded-lg p-6 relative">
+                <!-- Avatar -->
+                <div class="absolute -top-16 left-1/2 transform -translate-x-1/2">
+                    <label for="avatar" class="block">
+                        <img id="avatarPreview" src="https://via.placeholder.com/100" alt="Avatar Preview"
+                            class="w-32 h-32 rounded-full border-4 border-white shadow-md cursor-pointer object-cover" />
+                        <input type="file" id="avatar" accept="image/*" class="hidden"
+                            onchange="previewAvatar(event)" />
+                    </label>
+                </div>
+                <!-- Save Avatar Button -->
+                <div class="mt-12">
+                    <button type="button" id="saveAvatarBtn"
+                        class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600">
+                        Save Avatar
+                    </button>
+                </div>
+
+                <div class="pt-4">
+                    <h1 class="text-2xl font-bold text-center mb-6">Update Profile</h1>
+                    <form id="profileForm" class="space-y-4">
+                        <!-- Name -->
+                        <div>
+                            <label for="name" class="block font-medium mb-1">Full Name</label>
+                            <input type="text" id="name"
+                                class="w-full border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-300"
+                                placeholder="Enter your full name" value="<%= user.real_name %>" />
+                            <p id="nameError" class="text-red-500 text-sm mt-1 hidden">
+                                Name is required.
+                            </p>
+                        </div>
+
+                        <!-- Email -->
+                        <div>
+                            <label for="email" class="block font-medium mb-1">Email</label>
+                            <input type="email" id="email"
+                                class="w-full border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-300"
+                                placeholder="Enter your email" value="<%= user.email %>" />
+                            <p id="emailError" class="text-red-500 text-sm mt-1 hidden">
+                                Invalid email format.
+                            </p>
+                        </div>
+
+                        <!-- Phone -->
+                        <div>
+                            <label for="phone" class="block font-medium mb-1">Phone Number</label>
+                            <div class="flex">
+                                <span
+                                    class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">+84</span>
+                                <input type="text" id="phone"
+                                    class="w-full border-gray-300 rounded-r-lg p-2 focus:ring focus:ring-blue-300"
+                                    placeholder="Enter your phone number" value="<%= user.phone_number %>">
+                            </div>
+                            <p id="phoneError" class="text-red-500 text-sm mt-1 hidden">
+                                Invalid phone number.
+                            </p>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div>
+                            <button type="button" id="submitBtn"
+                                class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Save</button>
+                        </div>
+
+                        <!-- Change Password Button -->
+                        <div>
+                            <a href="/change-password"
+                                class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 text-center block">Change
+                                Password</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- #region Footer-->
+            <%- include('layouts/footer') %>
+                <!-- #endregion Footer -->
+                <script src="/js/cart.js"></script>
+                <script src="https://cdn.tailwindcss.com"></script>
+                <script src="/js/filterHandlingAndPaginationAJAX.js"></script>
+                <script src="/layouts/search"></script>
+                <script src="/js/profile.js"></script>
+</body>
+
+</html>

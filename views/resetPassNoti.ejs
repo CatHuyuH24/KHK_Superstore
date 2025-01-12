@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt lại mật khẩu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="relative bg-white p-8 rounded-lg shadow-md w-96 text-center">
+        <a href="/resetPass/emailIndentify" class="absolute top-4 left-4 text-orange-500 hover:underline text-lg">&larr; Quay lại</a>
+        <div class="mb-4 text-orange-500">
+           
+        </div>
+        <h2 class="text-xl font-bold text-gray-700 mb-4">Đặt lại mật khẩu</h2>
+        <p class="text-sm text-gray-600 mb-6">
+            Mã xác minh đã được gửi đến địa chỉ email <br>
+            <span class="text-orange-500 font-medium"><%= email %></span>. <br>
+            Vui lòng xác minh.
+        </p>
+        <a href="/login" class="w-full bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 focus:ring-2 focus:ring-orange-300 text-center block">
+            OK
+        </a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link href="//fonts.googleapis.com/css?family=Righteous" rel="stylesheet" />
+    <link href="//fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300i,700" rel="stylesheet" />
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/all.min.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link id="favicon" rel="icon" type="image/png" href="/images/store_icon.ico">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 h-screen flex items-center justify-center">
+    <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
+        <div class="flex items-center justify-between mb-6">
+            <button class="text-gray-500 hover:text-gray-700">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>
+            </button>
+            <h1 class="text-xl font-semibold text-gray-800">Đặt lại mật khẩu</h1>
+            <span></span>
+        </div>
+        <form action="/resetPass/emailIndentify" method="POST" id="forgot-password-form" >
+            <div class="mb-4">
+                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <input  type="email" id="email" name="email" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-orange-500 focus:border-orange-500" placeholder="Email">
+            </div>
+             
+            <div id="message" class="alert alert-danger text-center text-red-500 mb-4">
+                <%= message%>
+            </div>
+         
+            <button type="submit" class="w-full py-2 px-4 bg-orange-500 text-white font-semibold rounded-lg shadow-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">Tiếp theo</button>
+        </form>
+    </div>
+</body>
+</html>
+
