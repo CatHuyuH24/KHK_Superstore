@@ -60,11 +60,7 @@
                     <p class="text-xl text-primary font-semibold">
                       <%= product.manufacturer_name %>
                     </p>
-                    <% if (product.number > 0) {%>
-                      <p class="text-right text-base text-green-600">In stock</p>
-                    <% }else{ %>
-                      <p class="text-right text-base text-red-600">Out of stock</p>
-                    <% } %>
+                    <p class="text-right text-base text-red-600"><%= product.status %></p>
                   </div>
 
                   <div class="flex items-baseline mb-1 space-x-2">

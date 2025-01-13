@@ -91,7 +91,6 @@ async function renderTelevisionDetailPage(req, res) {
       title: TITLE, 
       user_id: userID, 
       reviews: reviews,
-      avartar_url: reviews[0].avartar_image_url,
       review_average: reviewAverage,
       reviewer_count: reviewerCount,
       total_reviews_count: totalCount,

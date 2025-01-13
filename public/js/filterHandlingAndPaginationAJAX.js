@@ -4,7 +4,7 @@ async function updateFilter() {
 
   // Lấy danh sách các thương hiệu (nhà sản xuất) đã được chọn
   const selectedManufacturers = formData.getAll('manufacturers');
-
+  console.log('filter LONZ', selectedManufacturers);
   // Tạo URL mới với các tham số
   const params = new URLSearchParams(window.location.search);
   params.set('page', 1);
@@ -17,6 +17,8 @@ async function updateFilter() {
   // Cập nhật URL mà không tải lại trang
   const newURL = `${window.location.pathname}?${params.toString()}`;
   window.history.pushState(null, '', newURL);
+
+  console.log('url cuoi cung', newURL);
   // Gửi yêu cầu AJAX tới server
   await fetchAndRender(newURL);
 }
@@ -41,36 +43,38 @@ async function applyFilterByFPS() {
   await fetchAndRender(newURL);
 }
 
+/**
+ * by min, max price, page
+ */
+// async function applyFilters() {
+//   const form = document.getElementById('price-filter-form');
+//   const formData = new FormData(form);
 
-async function applyFilters() {
-  const form = document.getElementById('price-filter-form');
-  const formData = new FormData(form);
+//   // Lấy giá trị min và max
+//   const minPrice = formData.get('min');
+//   const maxPrice = formData.get('max');
 
-  // Lấy giá trị min và max
-  const minPrice = formData.get('min');
-  const maxPrice = formData.get('max');
+//   // Tạo URL mới với các tham số
+//   const params = new URLSearchParams(window.location.search);
+//   params.set('page', 1); // Reset về trang đầu tiên
+//   if (minPrice) {
+//     params.set('min', minPrice);
+//   } else {
+//     params.delete('min');
+//   }
+//   if (maxPrice) {
+//     params.set('max', maxPrice);
+//   } else {
+//     params.delete('max');
+//   }
 
-  // Tạo URL mới với các tham số
-  const params = new URLSearchParams(window.location.search);
-  params.set('page', 1); // Reset về trang đầu tiên
-  if (minPrice) {
-    params.set('min', minPrice);
-  } else {
-    params.delete('min');
-  }
-  if (maxPrice) {
-    params.set('max', maxPrice);
-  } else {
-    params.delete('max');
-  }
+//   // Cập nhật URL mà không tải lại trang
+//   const newURL = `${window.location.pathname}?${params.toString()}`;
+//   window.history.pushState(null, '', newURL);
 
-  // Cập nhật URL mà không tải lại trang
-  const newURL = `${window.location.pathname}?${params.toString()}`;
-  window.history.pushState(null, '', newURL);
-
-  // Gửi yêu cầu AJAX tới server
-  await fetchAndRender(newURL);
-}
+//   // Gửi yêu cầu AJAX tới server
+//   await fetchAndRender(newURL);
+// }
 
 async function applyDateFilters() {
   const form = document.getElementById('created-time-filter-form');
@@ -103,9 +107,6 @@ async function applyDateFilters() {
 
 function applyAndUpdateFilters() {
   applyFilters();
-  applyFilterByFPS();
-  applyDateFilters();
-  updateFilter();
 }
 
 async function updateSortFilter() {
@@ -177,12 +178,10 @@ function updateProductList(products) {
                     <div class="flex justify-between mb-1 space-x-2">
                       <p class="text-xl text-primary font-semibold">
                         ${product.manufacturer_name}
-                      </p>`;
-    if (product.number > 0) {
-      productHTML += `<p class="text-right text-base text-green-600">In stock</p>`;
-    } else {
-      productHTML += `<p class="text-right text-base text-red-600">Out of stock</p>`;
-    }
+                      </p>
+                      <p class="text-right text-base text-red-600">${product.status}</p>`;
+                      
+   
     productHTML += `
                     </div>
                     <div class="flex items-baseline mb-1 space-x-2">
@@ -256,6 +255,7 @@ async function fetchAndRender(newURL) {
       if (contentType && contentType.includes('application/json')) {
         const data = await response.json();
         if (!data.error) {
+          console.log('go heere', data.products);
           updateProductList(data.products);
           updatePagination(data.total, data.itemsPerPage, data.page);
         } else {
@@ -328,3 +328,68 @@ document.addEventListener("DOMContentLoaded", function () {
   startDateInput.addEventListener("change", validateDates);
   endDateInput.addEventListener("change", validateDates);
 });
+
+
+
+async function applyFilters() {
+  const manufacturerForm = document.getElementById('manufacturer-filter-form');
+  const fpsForm = document.getElementById('FPS-filter-form');
+  const priceForm = document.getElementById('price-filter-form');
+  const dateForm = document.getElementById('created-time-filter-form');
+
+  const manufacturerFormData = new FormData(manufacturerForm);
+  const fpsFormData = new FormData(fpsForm);
+  const priceFormData = new FormData(priceForm);
+  const dateFormData = new FormData(dateForm);
+
+  const selectedManufacturers = manufacturerFormData.getAll('manufacturers');
+  const selectedFPS = fpsFormData.getAll('fps');
+  const minPrice = priceFormData.get('min');
+  const maxPrice = priceFormData.get('max');
+  const startDate = dateFormData.get('startDate');
+  const endDate = dateFormData.get('endDate');
+
+  const params = new URLSearchParams(window.location.search);
+  params.set('page', 1);
+
+  if (selectedManufacturers.length > 0) {
+    params.set('manufacturer', selectedManufacturers.join(','));
+  } else {
+    params.delete('manufacturer');
+  }
+
+  if (selectedFPS.length > 0) {
+    params.set('fps', selectedFPS.join(','));
+  } else {
+    params.delete('fps');
+  }
+
+  if (minPrice) {
+    params.set('min', minPrice);
+  } else {
+    params.delete('min');
+  }
+
+  if (maxPrice) {
+    params.set('max', maxPrice);
+  } else {
+    params.delete('max');
+  }
+
+  if (startDate) {
+    params.set('startDate', startDate);
+  } else {
+    params.delete('startDate');
+  }
+
+  if (endDate) {
+    params.set('endDate', endDate);
+  } else {
+    params.delete('endDate');
+  }
+
+  const newURL = `${window.location.pathname}?${params.toString()}`;
+  window.history.pushState(null, '', newURL);
+
+  await fetchAndRender(newURL);
+}

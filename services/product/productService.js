@@ -61,8 +61,6 @@ async function getAllProductsOfCategoriesWithFilterAndCount(
     search, products_category, startDate, endDate, fps,
   );
 
-  console.log("filter by fps: ", fpsFilter);
-
   let sortFilter = "";
   const [sortColumn, sortDir] = sort.split(",");
   if(sortColumn != null && sortDir != null) {
@@ -80,6 +78,7 @@ async function getAllProductsOfCategoriesWithFilterAndCount(
                 p.number, 
                 p.price, 
                 p.discount, 
+                p.status,
                 m.manufacturer_name, 
                 c.category_name, 
                 COUNT(DISTINCT r.user_id) AS reviewer_count,
@@ -103,6 +102,7 @@ async function getAllProductsOfCategoriesWithFilterAndCount(
                 p.number, 
                 p.price, 
                 p.discount, 
+                p.status,
                 m.id, 
                 c.id, 
                 m.manufacturer_name, 
@@ -195,7 +195,7 @@ async function getAllManufacturersOfCategory(products_category) {
  * //   last_modified: '2023-10-01T00:00:00.000Z',
  * //   fps_hz: 60,
  * //   screen_width_inches: 15.6,
- * //   status: 'on stock',
+ * //   status: 'On stock',
  * //   total_purchased: 200,
  * //   manufacturer_name: 'Manufacturer Name',
  * //   category_name: 'Category Name'
@@ -204,7 +204,7 @@ async function getAllManufacturersOfCategory(products_category) {
 async function getProductById(id) {
   try {
     const query = `
-    SELECT p.*, m.manufacturer_name, c.category_name, p.status
+    SELECT p.*, m.manufacturer_name, c.category_name
     FROM products p
     JOIN manufacturers m ON p.manufacturer_id = m.id
     JOIN categories c ON p.category_id = c.id
@@ -267,7 +267,7 @@ async function getProductById(id) {
 async function getRelatedProductsFromProductId(currentId, categoryName, limit = 3) {
   try {
     const query = `
-    SELECT p.id, p.name, p.image_url, p.number, p.price, p.discount, 
+    SELECT p.id, p.name, p.image_url, p.number, p.price, p.discount, p.status, 
           c.category_name, m.manufacturer_name, COUNT(DISTINCT r.user_id) AS reviewer_count, AVG(r.rating) AS review_average
     FROM products p JOIN categories c ON p.category_id = c.id
     LEFT JOIN reviews r on r.product_id = p.id
@@ -281,6 +281,7 @@ async function getRelatedProductsFromProductId(currentId, categoryName, limit = 
               p.number, 
               p.price, 
               p.discount, 
+              p.status,
               m.id, 
               c.id, 
               m.manufacturer_name, 

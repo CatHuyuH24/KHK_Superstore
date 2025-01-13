@@ -2,6 +2,7 @@ const indexService = require('./indexService');
 const productService = require('../../services/product/productService');
 const { StatusCodes, getReasonPhrase } = require('http-status-codes');
 const { user } = require('pg/lib/defaults');
+const { calculateDiscountedPrice } = require('../Utils/discountedPriceUtils');
 
 async function renderHomePage(req, res) {
   try {
@@ -34,6 +35,10 @@ async function renderHomePage(req, res) {
         endDate,
         fps,
       );
+
+      products.forEach(product => {
+        product.price = calculateDiscountedPrice(product.price, product.discount);
+      })
 
     // get manufacturers of all products
     const allmanufacturers =

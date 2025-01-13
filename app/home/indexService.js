@@ -71,6 +71,7 @@ async function getAllDiscountedProductsWithFilterAndCount(
                 p.number, 
                 p.price, 
                 p.discount, 
+                p.status,
                 m.manufacturer_name, 
                 c.category_name, 
                 COUNT(DISTINCT r.user_id) AS reviewer_count,
@@ -94,6 +95,7 @@ async function getAllDiscountedProductsWithFilterAndCount(
                 p.number, 
                 p.price, 
                 p.discount, 
+                p.status,
                 m.id, 
                 c.id, 
                 m.manufacturer_name, 
@@ -103,43 +105,7 @@ async function getAllDiscountedProductsWithFilterAndCount(
             LIMIT $1 OFFSET $2`,
       [limit, (page - 1) * limit]
     );
-    const query = ` SELECT 
-                p.id, 
-                p.name, 
-                p.image_url, 
-                p.number, 
-                p.price, 
-                p.discount, 
-                m.manufacturer_name, 
-                c.category_name, 
-                COUNT(DISTINCT r.user_id) AS reviewer_count,
-                AVG(r.rating) AS review_average,             
-                COUNT(*) OVER() AS total_count
-            FROM products p
-            JOIN categories c ON p.category_id = c.id
-            JOIN manufacturers m ON p.manufacturer_id = m.id
-            LEFT JOIN reviews r ON p.id = r.product_id
-            WHERE p.discount > 0 
-              ${productsCategoryFilter}
-              ${searchFilter}
-              ${priceFilter}
-              ${dateFilter}
-              ${fpsFilter}
-              ${manufacturerFilter}
-            GROUP BY 
-                p.id, 
-                p.name, 
-                p.image_url, 
-                p.number, 
-                p.price, 
-                p.discount, 
-                m.id, 
-                c.id, 
-                m.manufacturer_name, 
-                c.category_name
-              
-              ${sortFilter}
-            LIMIT ${limit} OFFSET ${(page - 1) * limit}`;
+    
     let count = 0;
     if(result.rows.length > 0){
       count = parseInt(result.rows[0].total_count);

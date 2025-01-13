@@ -13,10 +13,16 @@ const addToCart = async (req, res) => {
         }
         const product = await productService.getProductById(product_id);
         console.log('Product:', product.status); // Debugging log
-        if(product.status==='out of stock'){
+        if(product.status == 'Out of stock'){
             return res
             .status(StatusCodes.BAD_REQUEST)
             .json({ message: getReasonPhrase(StatusCodes.BAD_REQUEST) + '\nProduct out of stock' });
+        }
+        
+        if(product.status == 'Suspended'){
+            return res
+            .status(StatusCodes.BAD_REQUEST)
+            .json({ message: getReasonPhrase(StatusCodes.BAD_REQUEST) + '\nProduct suspended' });
         }
         const result = await cartService.addToCart(user_id, product_id, quantity, price);
         console.log('Service Result:', result); // Debugging log

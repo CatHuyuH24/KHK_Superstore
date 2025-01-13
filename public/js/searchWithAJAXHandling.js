@@ -50,12 +50,9 @@ function updateProductList(products) {
                       <div class="flex justify-between mb-1 space-x-2">
                         <p class="text-xl text-primary font-semibold">
                           ${product.manufacturer_name}
-                        </p>`;
-      if (product.number > 0) {
-        productHTML += `<p class="text-right text-base text-green-600">In stock</p>`;
-      } else {
-        productHTML += `<p class="text-right text-base text-red-600">Out of stock</p>`;
-      }
+                        </p>
+                        <p class="text-right text-base text-red-600">${product.status}</p>`;
+      
       productHTML += `
                       </div>
                       <div class="flex items-baseline mb-1 space-x-2">

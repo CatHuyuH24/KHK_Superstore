@@ -147,11 +147,7 @@
                             <div class="space-y-2">
                                 <p class="font-semibold space-x-2">
                                     <span class="text-gray-800">Availability: </span>
-                                    <% if (product.number> 0) { %>
-                                        <span class="text-green-600">In Stock (<%= product.number %>)</span>
-                                        <% }else{ %>
-                                            <span class="text-red-600">Currently out of stock</span>
-                                        <% } %>
+                                    <span class="text-red-600"><%= product.status %> (<%= product.number %>)</span>
                                 </p>
                                 <p class="space-x-2">
                                     <span class="text-gray-800 font-semibold">Manufacturer: </span>
@@ -372,11 +368,8 @@
                                                 <span class="font-semibold">
                                                     <%= product.manufacturer_name %>
                                                 </span>
-                                                <% if (product.number > 0) {%>
-                                                    <span class="text-end text-sm lg:text-base text-green-600">In stock</span>
-                                                  <% }else{ %>
-                                                    <div class="text-end text-sm lg:text-base text-red-600">Out of stock</div>
-                                                  <% } %>
+                                                <span class="text-end text-sm lg:text-base text-red-600"><%= product.status %></span>
+                                                
                                             </div>
                                         </a>
                                         <div class="flex items-baseline mb-1 space-x-2">

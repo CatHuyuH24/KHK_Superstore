@@ -1,6 +1,7 @@
 const checkoutService = require('./checkoutService');
 const profileService=require('../profile/profileService');
-const cartService=require('../cart/cartService')
+const cartService=require('../cart/cartService');
+const { calculateDiscountedPrice } = require('../Utils/discountedPriceUtils');
 
 const renderCheckoutPage=async (req,res)=>{
     try{
@@ -49,15 +50,15 @@ async function SaveOrderToDB(req,res){
         }
 
 
-        const {phonenumber,address_line} = req.body;
+        const {address_line} = req.body;
      
 
         const totalPay = parseFloat(req.body.totalPay);
         
-        const orderInfo=await checkoutService.createNewOrder(userID,totalPay,address_line);
+        const orderInfo = await checkoutService.createNewOrder(userID,totalPay,address_line);
 
         for (const product of products) {
-          await checkoutService.createOrderDetail(orderInfo.order_id, product.id, product.quantity,product.discount_price);
+          await checkoutService.createOrderDetail(orderInfo.order_id, product.id, product.quantity,product.price);
           cartService.deleteProductInCart(product.id,userID);
         }
 
