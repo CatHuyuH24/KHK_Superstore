@@ -79,7 +79,7 @@ async function changePassword(req, res) {
         const { currentPassword, newPassword, confirmNewPassword } = req.body;
 
         // Check if the new password meets the requirements
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        const passwordRegex = /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,}$/;
         if (!passwordRegex.test(newPassword)) {
             const message = "Password must be at least 8 characters long and include at least one number, one uppercase letter, one lowercase letter, and one special character.";
             return res.render('changePassword', { title: 'Change Password', message, user_id: userID });
