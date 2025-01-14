@@ -99,11 +99,16 @@ async function renderComputerDetailPage(req, res) {
       reviews_per_page: limit,
       error: false,
     }
+    // Set Cache-Control headers
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+    res.set('Surrogate-Control', 'no-store');
 
-    if(req.xhr) {
+    if (req.xhr || req.headers['x-requested-with'] === 'XMLHttpRequest') {
       return res.json(response);
     }
-    res.render("product", response);
+    res.render('product', response);
   } catch (error) {
     console.error("Error rendering computer detail page:", error);
     res

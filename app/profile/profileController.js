@@ -28,7 +28,7 @@ async function updateProfile(req, res) {
 
         const phoneRegex = /^0\d{9}$/;
         if (!phoneRegex.test(phone)) {
-            return res.status(400).send('Số điện thoại không hợp lệ. Số điện thoại phải bắt đầu bằng 0 và có đúng 10 chữ số.');
+            return res.status(400).send('Invalid phone number.\nThe phone number must start with 0 and have the length of 10.');
         }
 
         const user = await profileService.getUserById(userID);

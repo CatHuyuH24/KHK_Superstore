@@ -83,6 +83,16 @@ async function renderProductPage(req, res) {
     return res.status(StatusCodes.NOT_FOUND).send('Product not found');
   }
 
+  // Set Cache-Control headers
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
+  res.set('Surrogate-Control', 'no-store');
+
+  if (req.xhr || req.headers['x-requested-with'] === 'XMLHttpRequest') {
+    return res.json(response);
+  }
+
   res.render('product', { title: 'Product Page', product });
 }
 
