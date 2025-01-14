@@ -18,6 +18,12 @@ const verifyCallback=async (email, password, done)=>{
             "Your account has not been verified yet!. Check your email!.";
             return done(null,false, { message, title });
         }
+        if(!user.is_active){
+            message =
+            "Your account has been ban!";
+            return done(null,false, { message, title });
+        }
+        
         const isValid=await validPassword(password,user.hashed_password,user.salt);
 
         if(isValid){
