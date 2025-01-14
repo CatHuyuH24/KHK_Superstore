@@ -17,7 +17,7 @@ passport.use(new FacebookStrategy({
                 profile.emails ? profile.emails[0].value : '',// email (nếu có thể lấy từ profile)
                 '', // hashed_password
                 '', // salt
-                'user', // role
+                'customer', // role
                 '' // avatar_img_url (nếu có thể lấy từ profile)
             );
 

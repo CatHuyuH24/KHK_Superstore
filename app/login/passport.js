@@ -20,7 +20,7 @@ const verifyCallback=async (email, password, done)=>{
         }
         if(!user.is_active){
             message =
-            "Your account has been ban!";
+            "Your account has been baned!";
             return done(null,false, { message, title });
         }
         
