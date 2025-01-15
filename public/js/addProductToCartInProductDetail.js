@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
    
     const userId = document.getElementById("user-id").value;
-    console.log("User ID:", userId);
   
     document.addEventListener("click", async (event) => {
       if (event.target && event.target.matches(".add-to-cart-btn")) {
@@ -11,7 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         event.preventDefault();
         const productId = event.target.getAttribute("data-product-id");
-        console.log(productId);
         const quantityElement = document.getElementById('quantity');
         const quantity = quantityElement ? quantityElement.innerText : 1;
         const price = event.target.getAttribute("data-product-price");

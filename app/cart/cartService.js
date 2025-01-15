@@ -14,7 +14,6 @@ const addToCart = async (user_id, product_id, quantity, price) => {
         `;
         const values = [user_id, product_id, quantity, price];
         const result = await pool.query(query, values);
-        console.log('Add to Cart Result:', result.rows[0]); // Debugging log
         return result.rows[0];
     } catch {
         console.error('Error adding product to cart:', error.message);

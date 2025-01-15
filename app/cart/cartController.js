@@ -5,14 +5,12 @@ const { StatusCodes, getReasonPhrase } = require('http-status-codes');
 const addToCart = async (req, res) => {
     try {
         const { user_id, product_id, quantity = 1, price } = req.body;
-        console.log('Request Body:', req.body); // Debugging log
         if (!user_id || !product_id || !quantity || !price) {
             return res
             .status(StatusCodes.BAD_REQUEST)
             .json({ message: getReasonPhrase(StatusCodes.BAD_REQUEST) + '\nMissing required fields' });
         }
         const product = await productService.getProductById(product_id);
-        console.log('Product:', product.status); // Debugging log
         if(product.status == 'Out of stock'){
             return res
             .status(StatusCodes.BAD_REQUEST)
@@ -25,7 +23,6 @@ const addToCart = async (req, res) => {
             .json({ message: getReasonPhrase(StatusCodes.BAD_REQUEST) + '\nProduct suspended' });
         }
         const result = await cartService.addToCart(user_id, product_id, quantity, price);
-        console.log('Service Result:', result); // Debugging log
         if (result) {
             return res.status(200).json({ message: "Product added to cart successfully", cart: result });
         } else {

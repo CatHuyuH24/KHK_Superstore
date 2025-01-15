@@ -99,13 +99,10 @@
                     logoutLink.innerHTML = '<i class="fas fa-sign-out-alt mr-2"></i>Logout';
                 }
     
-            } else {
-                console.log("User chưa đăng nhập, không có thông tin user.");
-    
+            } else {    
                 const authLinks = document.getElementById('auth-links');
                 const userMenu = document.getElementById('user-menu');
                 const cart=document.getElementById('cart');
-                
                 // Hide user menu and show register/login links
                 if (authLinks) {
                     authLinks.style.display = 'flex';

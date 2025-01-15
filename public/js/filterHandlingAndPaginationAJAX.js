@@ -4,7 +4,6 @@ async function updateFilter() {
 
   // Lấy danh sách các thương hiệu (nhà sản xuất) đã được chọn
   const selectedManufacturers = formData.getAll('manufacturers');
-  console.log('filter LONZ', selectedManufacturers);
   // Tạo URL mới với các tham số
   const params = new URLSearchParams(window.location.search);
   params.set('page', 1);
@@ -17,8 +16,6 @@ async function updateFilter() {
   // Cập nhật URL mà không tải lại trang
   const newURL = `${window.location.pathname}?${params.toString()}`;
   window.history.pushState(null, '', newURL);
-
-  console.log('url cuoi cung', newURL);
   // Gửi yêu cầu AJAX tới server
   await fetchAndRender(newURL);
 }
@@ -255,7 +252,6 @@ async function fetchAndRender(newURL) {
       if (contentType && contentType.includes('application/json')) {
         const data = await response.json();
         if (!data.error) {
-          console.log('go heere', data.products);
           updateProductList(data.products);
           updatePagination(data.total, data.itemsPerPage, data.page);
         } else {

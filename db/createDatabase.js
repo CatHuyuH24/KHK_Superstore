@@ -15,12 +15,7 @@ async function createDatabase() {
 	}
 	else
 	{
-		console.log("development create-db used");
-		console.log(process.env.DB_NAME);
-		console.log(process.env.DB_HOST);
-		console.log(process.env.DB_PASSWORD);
-		
-		
+		console.log("development create-db used");		
 		//development
 		client = new Client({
 			host: process.env.DB_HOST,

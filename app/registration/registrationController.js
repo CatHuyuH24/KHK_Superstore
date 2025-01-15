@@ -70,7 +70,6 @@ async function handleRegisterRequest(req, res) {
                 if (req.xhr) {
                     return res.json({ message, title });
                 }
-                console.log("Register Successfull");
             } catch (error) {
                 console.error("Error creating user:", error);
                 res.status(500).send("Error registering user.");

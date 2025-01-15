@@ -70,7 +70,6 @@ async function changeNewPassword(req,res){
 
         const email = req.body.email;
         const uniqueString = req.body.uniqueString;
-        console.log(email,uniqueString);
         const message="Some error occur.";
         const user=await resetPAssService.findUserByEmail(email);
     

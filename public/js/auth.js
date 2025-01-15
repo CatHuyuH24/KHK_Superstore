@@ -10,10 +10,8 @@ const token = localStorage.getItem('token');
 apiClient.interceptors.request.use(config => {
     if (token) {
         config.headers['Authorization'] = token;
-        console.log(token);  
     }
     else{
-      console.log('No token found, redirecting to login...');
       window.location.href = '/login';
     }
     return config;

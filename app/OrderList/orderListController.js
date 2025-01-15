@@ -3,10 +3,7 @@ const orderListService = require('./orderListService');
 async function renderOrderListPage(req, res) {
   try {
     let status = req.query.status || 'All';
-    const search = req.query.search || '';
-
-    console.log(status);
-   
+    const search = req.query.search || '';   
     const userID = res.locals.user ? res.locals.user.id : null;
     if (!userID) {
         return res.redirect('/login');
