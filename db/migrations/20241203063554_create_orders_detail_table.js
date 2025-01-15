@@ -8,7 +8,7 @@ exports.up = async function (knex) {
         order_id INT NOT NULL,
         product_id INT NOT NULL,
         quantity INT NOT NULL,
-        price decimal(10 ,2) ,
+        price decimal(20 ,2) ,
         FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
         FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
         PRIMARY KEY (order_id, product_id)

@@ -16,7 +16,7 @@ exports.up = async function(knex) {
     status_payment TEXT CHECK (status_payment IN ('Paid', 'Unpaid')) DEFAULT 'Unpaid',
     order_code TEXT,
     address TEXT,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 `);
   

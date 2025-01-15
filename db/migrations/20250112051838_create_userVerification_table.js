@@ -10,7 +10,7 @@ exports.up = async function (knex) {
         salt VARCHAR(255) NOT NULL,
         create_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW(),
         expires_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW() + INTERVAL '60 seconds',
-        FOREIGN KEY (user_id) REFERENCES users(id)
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
       );
     `);
   };

@@ -6,7 +6,6 @@ var crypto = require('crypto');
 const genPassword = require('../Utils/passwordUtils').genPassword;
 const genUniqueString = require('../Utils/passwordUtils').genUniqueString;
 const validUniqueString = require('../Utils/passwordUtils').validUniqueString;
-const validatePassword=require('../Utils/checkValidPassWord').validatePassword;
 const nodemailer=require("nodemailer");
 const {v4: uuidv4}=require("uuid");
 
@@ -159,7 +158,8 @@ async function renderVerify(req, res) {
 }
 
 const sendVerificationEmail =async ({id,email},res)=>{
-    const currentUrl="http://localhost:3000/";
+   
+    const currentUrl=" https://khk-superstore.onrender.com/";
     const uniqueString=uuidv4()+ id;
     const mailOptions={
         from: process.env.AUTH_EMAIL,
@@ -196,6 +196,31 @@ const sendVerificationEmail =async ({id,email},res)=>{
     }
 
 }
+
+
+function validatePassword(password) {
+    const minLength = 8;
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+    if (password.length < minLength) {
+        return "Password must be at least 8 characters long.";
+    }
+    if (!hasUppercase || !hasLowercase) {
+        return "Password must contain both uppercase and lowercase letters.";
+    }
+    if (!hasNumber) {
+        return "Password must contain at least one number.";
+    }
+    if (!hasSpecialChar) {
+        return "Password must contain at least one special character.";
+    }
+    return "Password is valid.";
+}
+
+
 
 
 module.exports = {
