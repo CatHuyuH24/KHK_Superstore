@@ -2,6 +2,8 @@ const checkoutService = require('./checkoutService');
 const profileService=require('../profile/profileService');
 const cartService=require('../cart/cartService');
 const { calculateDiscountedPrice } = require('../Utils/discountedPriceUtils');
+const { StatusCodes } = require('http-status-codes');
+const e = require('connect-flash');
 
 const renderCheckoutPage=async (req,res)=>{
     try{
@@ -56,20 +58,39 @@ async function SaveOrderToDB(req,res){
         const totalPay = parseFloat(req.body.totalPay);
         
         const orderInfo = await checkoutService.createNewOrder(userID,totalPay,address_line);
+        try {
+          for (const product of products) {
+            await checkoutService.createOrderDetail(orderInfo.order_id, product.id, product.quantity,product.price, product.name);
+            cartService.deleteProductInCart(product.id,userID);
+          }
+        
+        } catch (error) {
+          // should also delete the related order details by 'ON DELETE CASCADE'
+          const deleteOrder = await checkoutService.deleteOrder(orderInfo.order_id);
+          await checkoutService.deleteOrder(orderInfo.order_id);
+          const {products, totalSum, totalDiscount, cartTotalPay} = await cartService.getProductInCartByUserId(userID);
+          const cartProducts = products;
+          
+          const response = {
+              title: 'Cart Page - Superstore',
+              error: false,
+              products: cartProducts,
+              totalSum: totalSum,
+              totalDiscount: totalDiscount,
+              user_id: userID,
+              totalPay: cartTotalPay,
+              errorMessage: error.message,
+            };
 
-        for (const product of products) {
-          await checkoutService.createOrderDetail(orderInfo.order_id, product.id, product.quantity,product.price);
-          cartService.deleteProductInCart(product.id,userID);
-        }
+            return res.render('cart', response);//with error message
+          }
 
-        return res.redirect(`/checkout/orderSuccess?order_code=${orderInfo.order_code}`);
+          return res.redirect(`/checkout/orderSuccess?order_code=${orderInfo.order_code}`);
 
     }catch(error){
         console.error('Error save customer order:',error);
     }
 }
-
-
 
 async function renderOrderSuccessPage(req,res){
 
@@ -92,7 +113,6 @@ async function renderOrderSuccessPage(req,res){
     };
     res.render('orderSuccess',response);
 }
-
 
 async function renderOrderListPage(req, res) {
   try {

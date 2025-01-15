@@ -47,7 +47,8 @@ const renderCartPage=async (req,res)=>{
             totalSum: totalSum,
             totalDiscount: totalDiscount,
             user_id:user_id,
-            totalPay: totalPay
+            totalPay: totalPay,
+            errorMessage: null
           };
 
         if(req.xhr){

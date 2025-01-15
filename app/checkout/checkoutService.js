@@ -1,5 +1,6 @@
 const { user } = require('pg/lib/defaults');
 const pool = require('../../config/database');
+const productService = require('../../services/product/productService')
 
 const getProductInCartByUserIdToOrder= async(user_id)=>{
     try {
@@ -24,7 +25,14 @@ const getProductInCartByUserIdToOrder= async(user_id)=>{
         return { products: [], totalSum: 0, totalDiscount: 0 };
     }
 }
-
+async function deleteOrder(order_id) {
+    try {
+        await pool.query(`DELETE FROM orders WHERE order_id=$1`, [order_id]);
+    } catch (error) {
+        console.error('Error deleting order by order_id', error);
+        throw error;
+    }
+}
 async function createNewOrder(user_id, total, address) {
     try {
         const result = await pool.query(
@@ -42,17 +50,12 @@ async function createNewOrder(user_id, total, address) {
         throw error; 
     }
 }
-
-async function createOrderDetail(order_id,product_id,quantity,discount_price){
+async function createOrderDetail(order_id,product_id,quantity,discount_price, product_name){
     try{
+        const updatedProductNumber = await productService.updateProductNumberOnStock(product_id, quantity, product_name);
         const result = await pool.query(`insert into orders_detail (order_id,product_id,quantity,price) values($1,$2,$3,$4)`,[order_id,product_id,quantity,discount_price]);
 
-        const updateProductQuantity = await pool.query(`update products set number = number-$1 where id=$2`,[quantity,product_id]);
-        if(result.rowCount===0 || updateProductQuantity.rowCount===0){
-            throw new Error('Error creating new order detail');
-        } else {
-            return true;
-        }
+        return updatedProductNumber;
     }catch(error){
         console.error('Error creating new order detail', error);
         throw error; 
@@ -180,5 +183,6 @@ module.exports ={
     createNewOrder,
     findOrderWithDetails,
     updateOrderStatus,
-    getAllOrderAndOrderItemByUserID
+    getAllOrderAndOrderItemByUserID,
+    deleteOrder,
 }

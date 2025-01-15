@@ -297,9 +297,39 @@ async function getRelatedProductsFromProductId(currentId, categoryName, limit = 
   }
 }
 
+async function updateProductNumberOnStock(productID, quantityPurchased, productName) {
+  try {
+    if(quantityPurchased <= 0) {
+      throw new Error('Invalid quantity purchased');
+    }
+
+    const oldNumber = await pool.query('SELECT number FROM products WHERE id = $1', [productID]);
+    if(oldNumber.rows.length === 0) {
+      throw new Error('Product not found');
+    }
+
+    if(oldNumber.rows[0].number < quantityPurchased) {
+      throw new Error('Not enough products in stock for product ' + productName);
+    }
+
+    const query = `UPDATE products SET number = number - $1 WHERE id = $2 RETURNING number`;
+    const newNumber = await pool.query(query, [quantityPurchased, productID]);
+
+    if(0 == newNumber.rows[0].number){
+      await pool.query('UPDATE products SET status = $1 WHERE id = $2', ['Out of stock', productID]);
+    }
+
+    return true;
+  } catch (error) {
+    console.log('Error updating product number on stock:', error);
+    throw error;
+  }
+}
+
 module.exports = {
   getAllProductsOfCategoriesWithFilterAndCount,
   getAllManufacturersOfCategory,
   getProductById,
   getRelatedProductsFromProductId,
+  updateProductNumberOnStock,
 };
