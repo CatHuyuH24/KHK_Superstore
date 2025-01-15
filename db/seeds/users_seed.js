@@ -18,6 +18,8 @@ exports.seed = async function(knex) {
       is_active: true,
       fullname: null,
       phone_number: null,
+      verified:true,
+      created_at: new Date()
     },
     {
       id: 2,
@@ -31,6 +33,8 @@ exports.seed = async function(knex) {
       is_active: true,
       fullname: null,
       phone_number: null,
+      verified:true,
+      created_at: new Date()
     },
   ]);
 };
