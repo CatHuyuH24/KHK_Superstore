@@ -155,6 +155,16 @@
                                         <%= product.manufacturer_name %>
                                     </span>
                                 </p>
+                                <p class="space-x-2">
+                                    <span class="text-gray-800 font-semibold">FPS: </span>
+                                    <span class="text-gray-600">
+                                        <% if(product.fps_hz == null){ %>
+                                            <span>No information</span>
+                                        <% } else { %>
+                                        <%= product.fps_hz %> Hz
+                                        <% } %>
+                                    </span>
+                                </p>
                                 <!-- <p class="space-x-2">
                             <span class="text-gray-800 font-semibold">Category: </span>
                             <span class="text-gray-600"></span>

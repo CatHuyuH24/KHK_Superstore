@@ -99,12 +99,16 @@ async function renderTelevisionDetailPage(req, res) {
       reviews_per_page: limit,
       error: false,
     }
-    console.log(reviews[0]);
 
-    if(req.xhr) {
+    // Set Cache-Control headers
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+    res.set('Surrogate-Control', 'no-store');
+
+    if (req.xhr || req.headers['x-requested-with'] === 'XMLHttpRequest') {
       return res.json(response);
     }
-
     res.render('product', response);
   } catch (error) {
     console.error("Error rendering television detail page:", error);

@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if(response.ok){
                 alert(result.message + "\nYour review will be processed soon.");
                 toggleForm();
+                changeReviewPage(1);// reviewsChangePageAJAX.js must be included before this file
             } else {
                 alert(result.message);
             }
