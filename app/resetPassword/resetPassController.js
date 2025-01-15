@@ -3,9 +3,6 @@ const userVerificationService=require('../userVerification/userVerificationServi
 const { StatusCodes, getReasonPhrase } = require('http-status-codes');
 var crypto = require('crypto');
 const genPassword = require('../Utils/passwordUtils').genPassword;
-const genUniqueString = require('../Utils/passwordUtils').genUniqueString;
-const validUniqueString = require('../Utils/passwordUtils').validUniqueString;
-const validatePassword=require('../Utils/checkValidPassWord').validatePassword;
 const nodemailer=require("nodemailer");
 const {v4: uuidv4}=require("uuid");
 

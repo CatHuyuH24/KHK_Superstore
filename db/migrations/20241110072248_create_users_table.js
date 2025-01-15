@@ -25,7 +25,7 @@ exports.up = async function (knex) {
       is_active BOOLEAN DEFAULT TRUE NOT NULL,
       fullname VARCHAR(255), 
       phone_number VARCHAR(255),
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );`
   );
 };
