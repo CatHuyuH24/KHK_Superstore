@@ -19,7 +19,7 @@
     "build:css": "npx tailwindcss -i ./public/css/main.css -o ./public/css/tailwind.css",
     "serve": "five-server",
     "fe:start": "concurrently \"npm run build:css\" \"npm run serve\"",
-    "start": "npm run setup-db:prod && node server.js"
+    "start": "node server.js"
   },
   "author": "Manh Trong Kien, Ma Cat Huynh, Nguyen Minh Khang",
   "license": "ISC",
