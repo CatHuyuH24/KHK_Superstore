@@ -6,7 +6,7 @@ const { calculateDiscountedPrice } = require('../Utils/discountedPriceUtils');
 const renderCheckoutPage=async (req,res)=>{
     try{
         const user_id = res.locals.user ? res.locals.user.id : null;
-        const {products, totalSum, totalDiscount, totalPay}=await checkoutService.getProductInCartByUserIdToOrder(user_id);
+        const {products, totalSum, totalDiscount, totalPay} = await checkoutService.getProductInCartByUserIdToOrder(user_id);
         const userProfile = await profileService.getUserProfile(user_id);
 
         const response = {

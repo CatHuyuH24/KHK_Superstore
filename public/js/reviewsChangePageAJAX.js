@@ -37,8 +37,9 @@ function updateReviews(reviews){
     reviews.forEach(review => {
         let reviewHTML = `<div class="bg-white shadow-md flex flex-col h-full justify-items-start">
                                     <div class="flex items-center justify-between p-3">
-                                        <div class="flex items-center m-2">
-                                            <img src="/images/user_image_placeholder.png" alt="user" class="w-10 h-10 rounded-full">
+                                        <div class="flex items-center m-2">`;
+        const avatar_url = review.avatar_img_url? review.avatar_img_url : '/images/default_avatar.png';
+        reviewHTML +=`<img src="${avatar_url}" alt="user" class="w-10 h-10 rounded-full">
                                             <div class="ml-3">
                                                 <h4 class="text-lg lg:text-xl font-medium text-gray-800">
                                                     ${review.username}

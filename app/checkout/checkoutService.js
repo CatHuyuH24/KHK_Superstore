@@ -45,7 +45,14 @@ async function createNewOrder(user_id, total, address) {
 
 async function createOrderDetail(order_id,product_id,quantity,discount_price){
     try{
-        const result=await pool.query(`insert into orders_detail (order_id,product_id,quantity,price) values($1,$2,$3,$4)`,[order_id,product_id,quantity,discount_price]);
+        const result = await pool.query(`insert into orders_detail (order_id,product_id,quantity,price) values($1,$2,$3,$4)`,[order_id,product_id,quantity,discount_price]);
+
+        const updateProductQuantity = await pool.query(`update products set number = number-$1 where id=$2`,[quantity,product_id]);
+        if(result.rowCount===0 || updateProductQuantity.rowCount===0){
+            throw new Error('Error creating new order detail');
+        } else {
+            return true;
+        }
     }catch(error){
         console.error('Error creating new order detail', error);
         throw error; 

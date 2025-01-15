@@ -68,7 +68,7 @@
                             <tr>
                                 <td colspan="6" class="text-center py-8 col-span-2 rounded-xl overflow-hidden">
                                     <p class="text-gray-300 text-lg mb-4">Oh My Gosh! Your cart is empty.</p>
-                                    <a href="/" class="bg-blue-500 text-white rounded-md px-6 py-2">EXPLORE OUR ITEM</a>
+                                    <a href="/" class="bg-blue-500 text-white rounded-md px-6 py-2">EXPLORE OUR ITEMS</a>
                                 </td>
                             </tr>
                         </table>
@@ -139,7 +139,7 @@
                         </tbody>
                     </table>
                     <td class="mb-8">  
-                        <button id="place-order" class="bg-green-700  text-white rounded-md px-6 py-2 mt-4 w-full">Place Order</button>
+                        <button id="place-order" onclick="moveToCheckout(<%= totalPay %>)" class="bg-green-700  text-white rounded-md px-6 py-2 mt-4 w-full">Place Order</button>
                     </td>
                 </div>
             </div>

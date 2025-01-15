@@ -1,8 +1,8 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const buttons = document.querySelectorAll("#place-order");
-    buttons.forEach(button => {
-        button.addEventListener("click", async (event) => {
-            window.location.href = "/checkout"; 
-        });
-    });
-});
+function moveToCheckout(totalPay){
+    if(totalPay <= 0){
+        alert("You're MISSING OUT!\nExplore our WONDERFUL items!");
+        return;
+    } else {
+        window.location.href = '/checkout';
+    }
+}
