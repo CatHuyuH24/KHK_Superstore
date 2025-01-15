@@ -90,7 +90,7 @@ async function changeNewPassword(req,res){
     }
 }
 const sendVerificationEmail =async ({id,email,real_name},res)=>{
-    const currentUrl="https://khk-superstore-swlf.onrender.com/";
+    const currentUrl=" https://khk-superstore-yart.onrender.com/";
     const uniqueString=uuidv4()+ id;
     const mailOptions={
         from: process.env.AUTH_EMAIL,
