@@ -4,6 +4,7 @@ const {calculateDiscountedPrice} = require("../Utils/discountedPriceUtils");
 const { use } = require("passport");
 const reviewService = require('../../services/reviews/reviewService');
 const productService = require('../../services/product/productService');
+const redisClient = require("../../config/redisClient");
 
 async function renderMobilephoneCategoryPage(req, res) {
   try {
@@ -60,7 +61,18 @@ async function renderMobilephoneCategoryPage(req, res) {
       return res.json(response);
     }
 
-    return res.render("category", response);
+    return res.render("category", response, async (err, html) => {
+      if (err) {
+        console.error("Error rendering mobilephone category page:", err);
+        res
+          .status(StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR));
+      } else {
+        const key = req.originalUrl;
+        redisClient.setex(key, 300, html);
+        res.send(html);
+      }
+    });
   } catch (error) {
     console.error("Error rendering mobilephone category page:", error);
     res
@@ -111,7 +123,18 @@ async function renderMobilephoneDetailPage(req, res) {
       return res.json(response);
     }
 
-    res.render('product', response);
+    const key = req.originalUrl;
+    res.render('product', response, async(err, html)=>{
+      if(err){
+        console.error("Error rendering mobilephone detail page:", err);
+        res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .send(getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR));
+      } else {
+        redisClient.setex(key, 180, html);
+        res.send(html);
+      }
+    });
   } catch (error) {
     console.error("Error rendering mobilephone detail page:", error);
     res

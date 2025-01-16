@@ -1,9 +1,9 @@
 const televisionService = require("./televisionService");
 const { StatusCodes, getReasonPhrase } = require("http-status-codes");
 const {calculateDiscountedPrice} = require("../Utils/discountedPriceUtils");
-const { user } = require("pg/lib/defaults");
 const reviewService = require('../../services/reviews/reviewService');
 const productService = require('../../services/product/productService');
+const redisClient = require("../../config/redisClient");
 
 async function renderTelevisionCategoryPage(req, res) {
   try {
@@ -60,7 +60,17 @@ async function renderTelevisionCategoryPage(req, res) {
       return res.json(response);
     }
 
-    return res.render("category", response);
+    const key = req.originalUrl;
+    return res.render("category", response, async (err, html) => {
+      if (err) {
+        console.error("Error rendering television category page:", err);
+        res
+          .status(StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR));
+      }
+      redisClient.setex(key, 300, html);
+      res.send(html);
+    });
   } catch (error) {
     console.error("Error rendering television category page:", error);
     res
@@ -109,7 +119,17 @@ async function renderTelevisionDetailPage(req, res) {
     if (req.xhr || req.headers['x-requested-with'] === 'XMLHttpRequest') {
       return res.json(response);
     }
-    res.render('product', response);
+    const key = req.originalUrl;
+    res.render('product', response, async (err, html) => {
+      if (err) {
+        console.error('Error rendering television detail page:', err);
+        return res
+          .status(StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR));
+      }
+      redisClient.setex(key, 180, html);
+      return res.send(html);
+    });
   } catch (error) {
     console.error("Error rendering television detail page:", error);
     res

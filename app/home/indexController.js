@@ -1,7 +1,7 @@
 const indexService = require('./indexService');
 const productService = require('../../services/product/productService');
 const { StatusCodes, getReasonPhrase } = require('http-status-codes');
-const { user } = require('pg/lib/defaults');
+const redisClient = require('../../config/redisClient');
 const { calculateDiscountedPrice } = require('../Utils/discountedPriceUtils');
 
 async function renderHomePage(req, res) {
@@ -66,8 +66,17 @@ async function renderHomePage(req, res) {
     if (req.xhr) {
       return res.json(response);
     }
-
-    return res.render('index', response);
+    const key = req.originalUrl;
+    return res.render('index', response, async (err, html) => {
+      if (err) {
+        console.error('Error rendering home page:', err);
+        return res
+          .status(StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR));
+      }
+      redisClient.setex(key, 300, html);
+      return res.send(html);
+    });
   } catch (error) {
     console.error('Error rendering home page:', error);
     res

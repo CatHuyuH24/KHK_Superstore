@@ -1,6 +1,7 @@
 const categoryService = require('./categoryService');
 const { StatusCodes, getReasonPhrase } = require('http-status-codes');
 const { calculateDiscountedPrice } = require('../Utils/discountedPriceUtils');
+const redisClient = require('../../config/redisClient');
 async function renderCategoryPage(req, res) {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -56,7 +57,19 @@ async function renderCategoryPage(req, res) {
     if (req.xhr) {
       return res.json(response);
     }
-    return res.render('category', response);
+    const key = req.originalUrl;
+    return res.render('category', response, async(err, html) => {
+      if (err) {
+        console.error('Error rendering category page:', err);
+        res
+          .status(StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR));
+      } else {
+        const key = req.originalUrl;
+        redisClient.setex(key, 300, html);
+        res.send(html);
+      }
+    });
   } catch (error) {
     console.error('Error rendering category page:', error);
     res

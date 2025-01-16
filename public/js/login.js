@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Xử lý khi click nút Logout
         const logoutBtn = document.getElementById('logout-btn');
-        logoutBtn.addEventListener('click', () => {
+        logoutBtn.addEventListener('click', async () => {
             // Xóa cookie token
             document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
             // Tải lại trang hoặc điều hướng đến trang login

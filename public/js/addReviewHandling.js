@@ -37,7 +37,20 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     })
 
-    addReviewButton.addEventListener("click", () => {
+    addReviewButton.addEventListener("click", async () => {
+        const productId = addReviewButton.getAttribute("product-id");
+        const productCategory = addReviewButton.getAttribute("product-category");
+        const key = window.location.pathname;
+        alert('product:' + productCategory + productId)
+        const _ = await fetch(`/api/cache?key=${key}`, {
+            method: "DELETE",
+        });
+        const __ = await fetch(`/api/cache?key=/category/${productCategory}`, {
+            method: "DELETE",
+        });
+        const ___ = await fetch('/api/cache?key=/', {
+            method: "DELETE",
+        });
         if(userId == ""){
             window.location.href = "/login"; 
             return;

@@ -17,7 +17,10 @@ document.getElementById('login-form').addEventListener('submit', async function(
         const result = await response.json();
         document.getElementById('message').innerText = result.message || 'Login Successfull';
         if (response.status === 200) {
-            window.location.href = result.redirectTo || '/';  1
+            const _ = await fetch('/api/cache?key=all', {
+                method: "DELETE",
+            });
+            window.location.href = result.redirectTo || '/';
         }
     } catch (error) {
         console.error('Error:', error);

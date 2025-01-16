@@ -6,6 +6,7 @@ const passport = require("passport");
 const flash = require("connect-flash");
 require('./app/login/facebook_auth.js');
 require("dotenv").config();
+const redisStore = require("connect-redis")(session);
 
 const { ConnectSessionKnexStore } = require("connect-session-knex");
 const knexConstructor = require("knex");
@@ -19,15 +20,18 @@ const store = new ConnectSessionKnexStore({
 });
 
 const app = express();
+const redisClient = require("./config/redisClient");
 app.use(
   session({
     secret: "keyboard cat",
     resave: false,
     saveUninitialized: false,
     store,
+    redisStore: new redisStore({ client: redisClient, ttl: 86400 }),
     cookie: { maxAge: 1000000 },
   })
 );
+
 app.use(flash());
 app.use((req, res, next) => {
   res.locals.message = req.flash("error");
@@ -52,7 +56,8 @@ const resetPassRouter=require("./app/resetPassword/resetPassRouter");
 const orderListRouter=require("./app/OrderList/orderListRouter");
 const reviewAPIRouter = require("./API/reviews/reviewRouter.js");
 const aboutUsRouter=require("./app/aboutUs/aboutUsRouter.js");
-
+const cacheAPIRouter = require("./API/cache/cacheRouter.js");
+const e = require("connect-flash");
 // Set the view engine to EJS
 app.set("view engine", "ejs");
 app.set("views", "views");
@@ -87,6 +92,7 @@ app.use("/resetPass",resetPassRouter);
 app.use("/orderList",orderListRouter);
 app.use("/aboutUs",aboutUsRouter);
 app.use("/api/reviews", reviewAPIRouter);
+app.use("/api/cache", cacheAPIRouter);
 
 const PORT = process.env.SERVER_PORT || 3000;
 app.listen(PORT, () => {

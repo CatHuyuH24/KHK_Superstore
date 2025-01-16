@@ -3,7 +3,7 @@ const { StatusCodes, getReasonPhrase } = require("http-status-codes");
 const {calculateDiscountedPrice} = require("../Utils/discountedPriceUtils");
 const reviewService = require('../../services/reviews/reviewService');
 const productService = require('../../services/product/productService');
-
+const redisClient = require("../../config/redisClient");
 async function renderComputerCategoryPage(req, res) {
   try {
     const page = parseInt(req.query.page)  || 1;
@@ -59,8 +59,17 @@ async function renderComputerCategoryPage(req, res) {
     if (req.xhr) {
       return res.json(response);
     }
-
-    return res.render("category", response);
+    const key = req.originalUrl;
+    return res.render("category", response, async (err, html) => {
+      if (err) {
+        console.error("Error rendering computer category page:", err);
+        res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .send(getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR));
+      }
+      redisClient.setex(key, 300, html);
+      res.send(html);
+    });
   } catch (error) {
     console.error("Error rendering computer category page:", error);
     res
@@ -108,7 +117,17 @@ async function renderComputerDetailPage(req, res) {
     if (req.xhr || req.headers['x-requested-with'] === 'XMLHttpRequest') {
       return res.json(response);
     }
-    res.render('product', response);
+    const key = req.originalUrl;
+    res.render('product', response, async(err, html)=>{
+      if(err){
+        console.error("Error rendering computer detail page:", err);
+        res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .send(getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR));
+      }
+      redisClient.setex(key, 180, html);
+      res.send(html);
+    });
   } catch (error) {
     console.error("Error rendering computer detail page:", error);
     res
