@@ -34,7 +34,7 @@ async function getAllOrderAndOrderItemByUserID(status, search, user_id) {
         order.products = [];
 
         const detailsResult = await pool.query(`
-          SELECT p.image_url, p.name, d.quantity, p.price
+          SELECT p.image_url, p.name, d.quantity, d.price
           FROM orders_detail d
           JOIN products p ON d.product_id=p.id
           WHERE d.order_id=$1
