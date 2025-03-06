@@ -17,8 +17,6 @@
     "setup-db:prod": "npm run create-db && npm run migrate:prod && npm run seed:prod",
     "build": "npm run setup:prod",
     "build:css": "npx tailwindcss -i ./public/css/main.css -o ./public/css/tailwind.css",
-    "serve": "five-server",
-    "fe:start": "concurrently \"npm run build:css\" \"npm run serve\"",
     "start": "node server.js"
   },
   "author": "Manh Trong Kien, Ma Cat Huynh, Nguyen Minh Khang",
